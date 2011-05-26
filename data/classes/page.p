@@ -72,6 +72,7 @@ $response:body[^if(def $doctype){$doctype}
 <body^if(def $bodyId){ id="$bodyId"}^if($bodyClass > 0){ class="^bodyClassString[]"}^if(def $bodyOnLoad){ onload="$bodyOnLoad"}>
 	$body
 #	$sBodyAddon
+# test comment
 </body>
 </html>]
 
