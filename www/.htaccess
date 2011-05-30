@@ -1,0 +1,8 @@
+AddHandler parsed-html html
+Action parsed-html /cgi-bin/parser3.cgi
+
+<Files ~ "\.(cfg|p)$">
+    Satisfy All
+    Order allow,deny
+    Deny from all
+</Files>
