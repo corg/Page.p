@@ -82,6 +82,7 @@ $response:body[^if(def $doctype){$doctype}
 
 
 @includeCss[][sLink]
+
 ^if($cssFiles > 0){
 	^cssFiles.menu{
 		^if(^isFileLinkable[$cssFiles.uri]){
@@ -94,7 +95,8 @@ $response:body[^if(def $doctype){$doctype}
 	}
 }
 ^if(def $sHeadStyle){
-	<style>$sHeadStyle</style>
+	$result[${result}<style>$sHeadStyle</style>]
+	
 }
 
 
