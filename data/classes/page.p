@@ -12,6 +12,8 @@ $hDoctypes[
 ^clearCssFiles[]
 ^clearJsFiles[]
 
+$doctype[$hDoctypes.html5]
+
 
 
 @clearCssFiles[]
@@ -82,7 +84,7 @@ $response:body[^if(def $doctype){$doctype}
 @includeCss[][sLink]
 ^if($cssFiles > 0){
 	^cssFiles.menu{
-		^if(-f $cssFiles.uri){
+		^if(^isFileLinkable[$cssFiles.uri]){
 			$sLink[<link rel="stylesheet" type="text/css" href="$cssFiles.uri" />]
 			^if(def $cssFiles.condition){
 				$sLink[<!--[if $cssFiles.condition]>$sLink<![endif]-->]
@@ -100,7 +102,7 @@ $response:body[^if(def $doctype){$doctype}
 @includeJs[][sLink]
 ^if($jsFiles > 0){
 	^jsFiles.menu{
-		^if(-f $jsFiles.uri){
+		^if(^isFileLinkable[$cssFiles.uri]){
 			$sLink[<script type="text/javascript" src="$jsFiles.uri"></script>]
 			^if(def $jsFiles.condition){
 				$sLink[<!--[if $jsFiles.condition]>$sLink<![endif]-->]
@@ -122,6 +124,11 @@ $sStyle]
 		$sHeadStyle[$sStyle]
 	}
 }
+
+
+
+@isFileLinkable[sFile]
+$result(-f $cssFiles.uri || ^cssFiles.uri.left(7) eq 'http://' || ^cssFiles.uri.left(8) eq 'https://')
 
 
 
