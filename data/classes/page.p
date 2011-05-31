@@ -113,9 +113,14 @@ $response:body[^if(def $doctype){$doctype}
 
 
 @addStyle[sStyle]
-^if(def aStyle){
-	$sHeadStyle[$sHeadStyle
-^normalize[$sStyle]]
+^if(def $sStyle){
+	$sStyle[^normalize[$sStyle]]
+	^if(def $sHeadStyle){
+		$sHeadStyle[$sHeadStyle
+$sStyle]
+	}{
+		$sHeadStyle[$sStyle]
+	}
 }
 
 
