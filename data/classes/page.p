@@ -91,6 +91,9 @@ $response:body[^if(def $doctype){$doctype}
 		}
 	}
 }
+^if(def $sHeadStyle){
+	<style>$sHeadStyle</style>
+}
 
 
 
@@ -105,9 +108,6 @@ $response:body[^if(def $doctype){$doctype}
 			$result[${result}$sLink]
 		}
 	}
-}
-^if(def $sHeadStyle){
-	<style>$sHeadStyle</style>
 }
 
 
