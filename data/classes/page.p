@@ -106,6 +106,17 @@ $response:body[^if(def $doctype){$doctype}
 		}
 	}
 }
+^if(def $sHeadStyle){
+	<style>$sHeadStyle</style>
+}
+
+
+
+@addStyle[sStyle]
+^if(def aStyle){
+	$sHeadStyle[$sHeadStyle
+^normalize[$sStyle]]
+}
 
 
 
