@@ -281,7 +281,7 @@ $hTemplates[
 	]
 ]
 
-^if($hConfig.templates is 'hash'){
+^if($hConfig.templates is hash){
 	$hTemplates[^hConfig.templates.union[$hTemplates]]
 }
 
