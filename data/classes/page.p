@@ -285,6 +285,4 @@ $hTemplates[
 	$hTemplates[^hConfig.templates.union[$hTemplates]]
 }
 
-$result[
-	^hTemplates.[$sState].match[%([^^%]*)%][g]{$hConfig.[$match.1]}
-]
+$result[^normalize[^hTemplates.[$sState].match[%([^^%]*)%][g]{$hConfig.[$match.1]}]]
