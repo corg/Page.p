@@ -210,6 +210,9 @@ $result[$sUri]
 $sUri[^request:uri.match[\?.*][]{}]
 
 $hConfig[^hash::create[$hConfig]]
+^if(!def $hConfig.selected_class){
+	$hConfig.selected_class[selected]
+}
 
 $sState[normal]
 
@@ -237,19 +240,16 @@ $hConfig.root}]
 $defaultTemplates[
 	$.normal[
 		<li class="%class%">
-			%decor%
 			<a href="%root%">%title%</a>
 		</li>
 	]
 	$.current[
-		<li class="%class%">
-			%decor%
+		<li class="%class% %selected_class%">
 			<b class="selected">%title%</b>
 		</li>
 	]
 	$.parent[
 		<li class="%class% %selected_class%">
-			%decor%
 			<a class="selected" href="%root%">%title%</a>
 		</li>
 	]
