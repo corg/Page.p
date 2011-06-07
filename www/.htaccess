@@ -1,6 +1,9 @@
 AddHandler parsed-html html
 Action parsed-html /cgi-bin/parser3.cgi
 
+SetEnv CGI_PARSER_CONFIG ../cgi-bin/auto.p
+SetEnv CGI_PARSER_LOG ../cgi-bin/parser3.log
+
 <Files ~ "\.(cfg|p)$">
     Satisfy All
     Order allow,deny
