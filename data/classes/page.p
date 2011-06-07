@@ -193,5 +193,68 @@ $result(false)
 }
 
 
+
 @isModePreview[][locals]
 $result($form:mode eq 'preview' && ^isDeveloper[])
+
+
+
+@normalizeUri[sUri]
+
+$result[$sUri]
+
+
+
+@navigationItem[hConfig][locals]
+# removing query string from URI 
+$sUri[^request:uri.match[\?.*][]{}]
+
+$hConfig[^hash::create[$hConfig]]
+
+$sState[normal]
+
+^if(def $hConfig.root){
+	$tRoot[^table::create{uri
+$hConfig.root}]
+
+	^tRoot.menu{
+		$sTestUri[$sUri]
+		^if(^sTestUri.right(1) eq '/'){
+			$sTestUri[${sTestUri}index.html]
+		}
+		$sTestRootUri[$tRoot.uri]
+		^if(^sTestRootUri.right(1) eq '/'){
+			$sTestRootUri[${sTestRootUri}index.html]
+		}
+		
+		^if($sTestUri eq $sTestRootUri){
+			$sState[current]
+			^break[]
+		}
+	}
+}
+
+$defaultTemplates[
+	$.normal[
+		<li class="%class%">
+			%decor%
+			<a href="%root%">%title%</a>
+		</li>
+	]
+	$.current[
+		<li class="%class%">
+			%decor%
+			<b class="selected">%title%</b>
+		</li>
+	]
+	$.parent[
+		<li class="%class% %selected_class%">
+			%decor%
+			<a class="selected" href="%root%">%title%</a>
+		</li>
+	]
+]
+
+$result[
+	^defaultTemplates.[$sState].match[%([^^%]*)%][g]{$hConfig.[$match.1]}
+]
