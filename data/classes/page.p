@@ -237,7 +237,39 @@ $hConfig.root}]
 	}
 }
 
-$defaultTemplates[
+^if($sState ne 'current'){
+	^if(def $hConfig.inner){
+		$tInner[^table::create{uri
+$hConfig.inner}]
+	
+		^tInner.menu{
+			$sTestUri[$sUri]
+			^if(^sTestUri.right(1) eq '/'){
+				$sTestUri[${sTestUri}index.html]
+			}
+			$sTestRootUri[$tInner.uri]
+			^if(^sTestRootUri.right(1) eq '/'){
+				$sTestRootUri[${sTestRootUri}index.html]
+			}
+			
+			^if($sTestUri eq $sTestRootUri){
+				$sState[parent]
+				^break[]
+			}
+		}
+	}{
+		^if(def $hConfig.root){
+			^tRoot.menu{
+				^if(^sUri.pos[$hConfig.root] == 0){
+					$sState[parent]
+					^break[]
+				}
+			}
+		}
+	}
+}
+
+$hTemplates[
 	$.normal[
 		<li class="%class%">
 			<a href="%root%">%title%</a>
@@ -255,6 +287,10 @@ $defaultTemplates[
 	]
 ]
 
+^if($hConfig.templates is 'hash'){
+	$hTemplates[^hConfig.templates.union[$hTemplates]]
+}
+
 $result[
-	^defaultTemplates.[$sState].match[%([^^%]*)%][g]{$hConfig.[$match.1]}
+	^hTemplates.[$sState].match[%([^^%]*)%][g]{$hConfig.[$match.1]}
 ]
