@@ -199,12 +199,6 @@ $result($form:mode eq 'preview' && ^isDeveloper[])
 
 
 
-@normalizeUri[sUri]
-
-$result[$sUri]
-
-
-
 @navigationItem[hConfig][locals]
 # removing query string from URI 
 $sUri[^request:uri.match[\?.*][]{}]
