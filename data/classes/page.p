@@ -64,7 +64,7 @@ $response:body[^if(def $doctype){$doctype}
 <head>
 	<meta http-equiv="Content-Type" content="text/html^; charset=UTF-8" />
 	^if($self.emulateIe7){
-		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7, IE=9" />
 	}
 	<title>$title</title>
 	^includeCss[]
