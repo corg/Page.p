@@ -210,19 +210,16 @@ $hConfig[^hash::create[$hConfig]]
 $sState[normal]
 
 ^if(def $hConfig.root){
+	$sState[^navigationItem_compareUri[$hConfig.root;$sUri;normal;current]]
+
 	$tRoot[^table::create{uri
 $hConfig.root}]
 	$hConfig.root[$tRoot.uri]
-
-	$sState[^navigationItem_compareUri[$tRoot;$sUri;normal;current]]
 }
 
 ^if($sState ne 'current'){
 	^if(def $hConfig.inner){
-		$tInner[^table::create{uri
-$hConfig.inner}]
-
-		$sState[^navigationItem_compareUri[$tInner;$sUri;$sState;parent]]
+		$sState[^navigationItem_compareUri[$hConfig.inner;$sUri;$sState;parent]]
 	}{
 		^if(def $hConfig.root){
 			^tRoot.menu{
@@ -261,8 +258,12 @@ $result[^normalize[^hTemplates.[$sState].match[%([^^%]*)%][g]{$hConfig.[$match.1
 
 
 
-@navigationItem_compareUri[tUri;sUri;sCurrentState;sResultState][locals]
+@navigationItem_compareUri[sUris;sUri;sCurrentState;sResultState][locals]
+$tUri[^table::create{uri
+$sUris}]
+
 $result[$sCurrentState]
+
 ^tUri.menu{
 	$sTestUri[$sUri]
 	^if(^sTestUri.right(1) eq '/'){
