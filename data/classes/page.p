@@ -228,6 +228,8 @@ $hConfig.root}]
 			^break[]
 		}
 	}
+	
+	$hConfig.root[$tRoot.uri]
 }
 
 ^if($sState ne 'current'){
