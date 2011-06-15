@@ -212,46 +212,17 @@ $sState[normal]
 ^if(def $hConfig.root){
 	$tRoot[^table::create{uri
 $hConfig.root}]
-
-	^tRoot.menu{
-		$sTestUri[$sUri]
-		^if(^sTestUri.right(1) eq '/'){
-			$sTestUri[${sTestUri}index.html]
-		}
-		$sTestRootUri[$tRoot.uri]
-		^if(^sTestRootUri.right(1) eq '/'){
-			$sTestRootUri[${sTestRootUri}index.html]
-		}
-		
-		^if($sTestUri eq $sTestRootUri){
-			$sState[current]
-			^break[]
-		}
-	}
-	
 	$hConfig.root[$tRoot.uri]
+
+	$sState[^navigationItem_compareUri[$tRoot;$sUri;normal;current]]
 }
 
 ^if($sState ne 'current'){
 	^if(def $hConfig.inner){
 		$tInner[^table::create{uri
 $hConfig.inner}]
-	
-		^tInner.menu{
-			$sTestUri[$sUri]
-			^if(^sTestUri.right(1) eq '/'){
-				$sTestUri[${sTestUri}index.html]
-			}
-			$sTestRootUri[$tInner.uri]
-			^if(^sTestRootUri.right(1) eq '/'){
-				$sTestRootUri[${sTestRootUri}index.html]
-			}
-			
-			^if($sTestUri eq $sTestRootUri){
-				$sState[parent]
-				^break[]
-			}
-		}
+
+		$sState[^navigationItem_compareUri[$tInner;$sUri;$sState;parent]]
 	}{
 		^if(def $hConfig.root){
 			^tRoot.menu{
@@ -287,3 +258,23 @@ $hTemplates[
 }
 
 $result[^normalize[^hTemplates.[$sState].match[%([^^%]*)%][g]{$hConfig.[$match.1]}]]
+
+
+
+@navigationItem_compareUri[tUri;sUri;sCurrentState;sResultState][locals]
+$result[$sCurrentState]
+^tUri.menu{
+	$sTestUri[$sUri]
+	^if(^sTestUri.right(1) eq '/'){
+		$sTestUri[${sTestUri}index.html]
+	}
+	$sTestRootUri[$tUri.uri]
+	^if(^sTestRootUri.right(1) eq '/'){
+		$sTestRootUri[${sTestRootUri}index.html]
+	}
+	
+	^if($sTestUri eq $sTestRootUri){
+		$result[$sResultState]
+		^break[]
+	}
+}
