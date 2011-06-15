@@ -6,8 +6,6 @@ page.p
 @auto[]
 $oPage[^page::init[]]
 
-^oPage.setDoctype[html5]
-
 
 
 @main[]
