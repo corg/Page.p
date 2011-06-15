@@ -221,7 +221,7 @@ $hConfig.root}]
 	^if(def $hConfig.inner){
 		$sState[^navigationItem_compareUri[$hConfig.inner;$sUri;$sState;parent]]
 	}{
-		^if(def $hConfig.root){
+		^if($tRoot){
 			^tRoot.menu{
 				^if(^sUri.pos[$hConfig.root] == 0){
 					$sState[parent]
