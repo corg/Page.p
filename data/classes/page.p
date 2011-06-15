@@ -64,7 +64,7 @@ $response:body[^if(def $doctype){$doctype}
 <head>
 	<meta http-equiv="Content-Type" content="text/html^; charset=UTF-8" />
 	^if($self.emulateIe7){
-		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7, IE=9" />
 	}
 	<title>$title</title>
 	^includeCss[]
@@ -74,7 +74,6 @@ $response:body[^if(def $doctype){$doctype}
 <body^if(def $bodyId){ id="$bodyId"}^if($bodyClass > 0){ class="^bodyClassString[]"}^if(def $bodyOnLoad){ onload="$bodyOnLoad"}>
 	$body
 #	$sBodyAddon
-# test comment
 </body>
 </html>]
 
@@ -211,48 +210,18 @@ $hConfig[^hash::create[$hConfig]]
 $sState[normal]
 
 ^if(def $hConfig.root){
+	$sState[^navigationItem_compareUri[$hConfig.root;$sUri;normal;current]]
+
 	$tRoot[^table::create{uri
 $hConfig.root}]
-
-	^tRoot.menu{
-		$sTestUri[$sUri]
-		^if(^sTestUri.right(1) eq '/'){
-			$sTestUri[${sTestUri}index.html]
-		}
-		$sTestRootUri[$tRoot.uri]
-		^if(^sTestRootUri.right(1) eq '/'){
-			$sTestRootUri[${sTestRootUri}index.html]
-		}
-		
-		^if($sTestUri eq $sTestRootUri){
-			$sState[current]
-			^break[]
-		}
-	}
+	$hConfig.root[$tRoot.uri]
 }
 
 ^if($sState ne 'current'){
 	^if(def $hConfig.inner){
-		$tInner[^table::create{uri
-$hConfig.inner}]
-	
-		^tInner.menu{
-			$sTestUri[$sUri]
-			^if(^sTestUri.right(1) eq '/'){
-				$sTestUri[${sTestUri}index.html]
-			}
-			$sTestRootUri[$tInner.uri]
-			^if(^sTestRootUri.right(1) eq '/'){
-				$sTestRootUri[${sTestRootUri}index.html]
-			}
-			
-			^if($sTestUri eq $sTestRootUri){
-				$sState[parent]
-				^break[]
-			}
-		}
+		$sState[^navigationItem_compareUri[$hConfig.inner;$sUri;$sState;parent]]
 	}{
-		^if(def $hConfig.root){
+		^if($tRoot){
 			^tRoot.menu{
 				^if(^sUri.pos[$hConfig.root] == 0){
 					$sState[parent]
@@ -286,3 +255,27 @@ $hTemplates[
 }
 
 $result[^normalize[^hTemplates.[$sState].match[%([^^%]*)%][g]{$hConfig.[$match.1]}]]
+
+
+
+@navigationItem_compareUri[sUris;sUri;sCurrentState;sResultState][locals]
+$tUri[^table::create{uri
+$sUris}]
+
+$result[$sCurrentState]
+
+^tUri.menu{
+	$sTestUri[$sUri]
+	^if(^sTestUri.right(1) eq '/'){
+		$sTestUri[${sTestUri}index.html]
+	}
+	$sTestRootUri[$tUri.uri]
+	^if(^sTestRootUri.right(1) eq '/'){
+		$sTestRootUri[${sTestRootUri}index.html]
+	}
+	
+	^if($sTestUri eq $sTestRootUri){
+		$result[$sResultState]
+		^break[]
+	}
+}
