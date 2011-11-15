@@ -199,12 +199,15 @@ $result($form:mode eq 'preview' && ^isDeveloper[])
 
 
 @navigationItem[hConfig][locals]
-# removing query string from URI 
-$sUri[^request:uri.match[\?.*][]{}]
-
 $hConfig[^hash::create[$hConfig]]
 ^if(!def $hConfig.selected_class){
 	$hConfig.selected_class[selected]
+}
+
+$sUri[$request:uri]
+^if(!$hConfig.keep_query){
+	# removing query string from URI 
+	$sUri[^sUri.match[\?.*][]{}]
 }
 
 $sState[normal]
